@@ -1,0 +1,140 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 10fr);
+  gap: 50px;
+  height: 500x;
+  width:1000px;
+  grid-auto-rows: flex;
+  grid-auto-columns:flex;
+  grid-template-areas:
+    "a  b"
+    "c  d";
+    align-items: start;
+}
+.item1 {
+  grid-area: a;
+  background-color: rgb(250, 249, 248);
+  box-shadow: 2px 2px 2px gray;
+  border-bottom-right-radius:10px;
+  border-bottom-left-radius: 10px;
+  text-align: start;
+}
+.item2 {
+  grid-area: b;
+}
+.item3 {
+  grid-area: c;
+}
+.item4 {
+  grid-area: d;
+  height: 350px;
+  width:400px;
+  display: flex;
+  cursor: pointer;
+  margin: 30px 0;
+  align-items: Start;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 2px dashed #d0d2d4;
+}
+h4 {
+  color: gray;
+  align:bottom;
+  font-display:inline-block;
+}
+p {
+color:gray;
+}
+.upload {
+  background-color:rgb(221, 221, 221);
+  border-radius:5px;
+  width:500px;
+  height:300px;
+  display:flex;
+  box-shadow: 5px 5px 5px gray;
+}
+.cloud{
+  position:relative;
+  left:210px;
+  top:70px;
+  width:10%;
+  height:15%;
+  margin: 2%;
+}
+.cloudtxt{
+  position:relative;
+  left:90px;
+  top:170px;
+  width:100%;
+  height:100%;
+  margin: 2%;
+}
+.upbutton{
+  position:relative;
+  left:130px;
+  top:130px;
+  height:10%;
+  Width:1%
+}
+.translate{
+  position:relative; /* Language logo */
+  left:50%;
+  top:30%;
+  width:20%;
+  height:70%;
+  margin:1px;
+}
+.textlan{
+  position:relative;/* Language text */
+  top:20px;
+  left:1px;
+  width:20%;
+  height:70%;
+}
+.btn1{
+  position:relative;
+  top:30px;
+  left:20px;
+  width:100px;
+  gap:5px;
+}
+.btn2{
+  position:relative;
+  top:30px;
+  left:20px;
+  width:100px;
+  gap:5px;
+}
+.btn3{
+  position:relative;
+  top:30px;
+  left:40px;
+  width:100px;
+  gap:5px;
+}
+.Splan{
+  position:relative; /* Speaker text */
+  top:70px;
+  left:1px;
+  width:20%;
+  height:70%;
+ 
+}
+.speaker{
+  position:relative; /* Speaker logo */
+  left:50%;
+  top:150%;
+  width:20%;
+  height:70%;
+  margin:1px;
+
+}
+.numspeaker{
+  position:relative; /* Speaker logo */
+  left:50%;
+  top:250%;
+  width:20%;
+  height:70%;
+  margin:1px;
+
+}
