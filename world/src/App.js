@@ -1,110 +1,72 @@
 import React from "react";
-import parse from "papaparse";
 import {useState} from 'react';
-import {Data} from './Components/Data';
 import * as XLSX from 'xlsx';
-
-
-
-
 
 function App() 
 {    
-  // on change states
-  const [excelFile, setExcelFile]=useState(null);
-  const [excelFileError, setExcelFileError]=useState(null);  
- 
-  // submit
-  const [excelData, setExcelData]=useState(null);
-  // it will contain array of objects
 
-  // handle File
-  const fileType=['application/vnd.ms-excel'];
-  const handleFile = (e)=>
-  {
-    let selectedFile = e.target.files[0];
-    if(selectedFile){
-      // console.log(selectedFile.type);
-      if(selectedFile&&fileType.includes(selectedFile.type)){
-        let reader = new FileReader();
-        reader.readAsArrayBuffer(selectedFile);
-        reader.onload=(e)=>{
-          setExcelFileError(null);
-          setExcelFile(e.target.result);
-        } 
-      }
-      else{
-        setExcelFileError('Please select a .xsl file');
-        setExcelFile(null);
-      }
-    }
-    else{
-      console.log('Select your file');
-    }
-  }
-
-  // submit function
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    if(excelFile!==null){
-      const workbook = XLSX.read(excelFile,{type:'buffer'});
-      const worksheetName = workbook.SheetNames[0];
-      const worksheet=workbook.Sheets[worksheetName];
-      const data = XLSX.utils.sheet_to_json(worksheet);
-      setExcelData(data);
-    }
-    else{
-      setExcelData(null);
-    }
-   
-  }
+    const [items, setItems] = useState([]);
   
-  return (
-    <div className="container">
+    const readExcel = (file) => {
 
-      {/* upload file section */}
-      <div className='form'>
-        <form className='form-group' autoComplete="off"
-        onSubmit={handleSubmit}>
-          <label><h5>Upload Excel file</h5></label>
-          <br></br>
-          <input type='file' className='form-control'
-          onChange={handleFile} required>
-          </input>                  
-          {excelFileError&&<div className='text-danger'
-          style={{marginTop:5+'px'}}>{excelFileError}</div>}
-          <button type='submit' className='btn btn-success'
-          style={{marginTop:5+'px'}}>Submit
-          </button>
-        </form>
-      </div>
+      const promise = new Promise((resolve, reject) => {
 
-      <br></br>
+        const fileReader = new FileReader();
 
-      {/* view file section */}
-      <h5>View Excel file</h5>
-      <div className='viewer'>
-        {excelData===null&&<>No file selected</>}
-        {excelData!==null&&(
-          <div className='table-responsive'>
-            <table className='table' >
-              <thead>
-                <tr>
-                  <th scope='col'>Time</th> 
-                  <th scope='col'>Text</th>
-                </tr>
-              </thead>
-              <tbody>
-                <Data excelData={excelData}/>
-              </tbody>
-            </table>            
-          </div>
-        )}       
-      </div>
-      123
-    </div>
-
+        fileReader.readAsArrayBuffer(file);
   
-  );
-}
+        fileReader.onload = (e) => {
+
+          const bufferArray = e.target.result;
+  
+          const wb = XLSX.read(bufferArray, { type: "buffer" });
+  
+          const wsname = wb.SheetNames[0];
+  
+          const ws = wb.Sheets[wsname];
+  
+          const data = XLSX.utils.sheet_to_json(ws);
+
+          
+          resolve(data);
+        };
+  
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+      promise.then((d) => {
+        setItems(d);
+      });
+    };
+  
+    return (
+      <div>
+        <input
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            readExcel(file);
+          }}
+        />
+        <table class="table container">
+          <thead>
+            <tr>
+              <th scope="col">Time</th>
+              <th scope="col">Text</th>
+            </tr>
+          </thead>
+           <tbody>
+            {items.map((d) => (
+              <tr key={d.Item}>
+                <th>{d.Time}</th>
+                <td>{d.Text}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+
+  }
 export default App;
